@@ -6,8 +6,10 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-slice';
+import { sendCartData, fetchCartData } from './store/cart-actions';
 import { RootState, AppDispatch } from './store/index';
+import { PropsCartItem } from './types/PropsCartItem';
+import { PropsUiNotification } from './types/PropsUiNotification';
 
 let isInitial = true;
 
@@ -18,17 +20,16 @@ function App() {
   const showCart = useSelector<RootState, boolean>(
     (state) => state.ui.cartIsVisible
   );
-  const cart = useSelector<
-    RootState,
-    {
-      items: unknown[];
-      totalQuantity: number;
-    }
-  >((state) => state.cart);
-  const notification = useSelector<
-    RootState,
-    { status: string; title: string; message: string }
-  >((state) => state.ui.notification);
+
+  const cart = useSelector<RootState, PropsCartItem>((state) => state.cart);
+
+  const notification = useSelector<RootState, PropsUiNotification>(
+    (state) => state.ui.notification
+  );
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isInitial) {
@@ -36,7 +37,9 @@ function App() {
       return;
     }
 
-    dispatch(sendCartData(cart));
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   return (
