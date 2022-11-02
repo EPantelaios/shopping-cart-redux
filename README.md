@@ -1,4 +1,4 @@
-#### Built a React shopping cart SPA with redux-toolkit
+#### Built a React shopping cart SPA using redux-toolkit
 
 #### `Instructions:`
 

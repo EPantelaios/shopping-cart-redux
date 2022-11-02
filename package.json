@@ -1,5 +1,5 @@
 {
-  "name": "food-order-app",
+  "name": "shopping-cart-redux",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
